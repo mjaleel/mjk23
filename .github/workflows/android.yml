@@ -3,7 +3,7 @@ name: Build APK
 on:
   push:
     branches:
-      - main  # أو الفرع الذي تستخدمه
+      - main  # غير الفرع إذا لازم
 
 jobs:
   build:
@@ -16,7 +16,7 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
-        python-version: '3.10'  # مناسب مع buildozer
+        python-version: '3.10'
 
     - name: Install dependencies
       run: |
@@ -30,8 +30,7 @@ jobs:
           libssl-dev \
           libffi-dev \
           libsqlite3-dev \
-          libncurses5 \
-          libncurses5-dev \
+          libncurses-dev \
           liblzma-dev \
           libbz2-dev \
           libreadline-dev \
@@ -39,14 +38,11 @@ jobs:
         pip install --upgrade pip
         pip install buildozer
 
-    - name: Initialize Buildozer environment
-      run: buildozer android debug
-
     - name: Build APK
       run: buildozer android debug
 
     - name: Upload APK artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: my_app_apk
         path: bin/*.apk
